@@ -1,0 +1,30 @@
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2rem 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.homeLink,
+.link {
+    display: flex;
+    align-items: center;
+    color: var(--text-muted);
+    transition: var(--transition);
+}
+
+.homeLink:hover,
+.link:hover {
+    color: var(--primary);
+}
+
+.separator {
+    opacity: 0.5;
+}
+
+.current {
+    font-weight: 600;
+    color: var(--text-main);
+}

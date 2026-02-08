@@ -1,34 +1,187 @@
-.quote{
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: beige;
+.quoteCard {
+    background: var(--glass);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: var(--transition);
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.quoteCard:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    z-index: 1;
+}
+
+.category {
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 0.4rem 0.8rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.badges {
+    display: flex;
+    gap: 0.5rem;
     align-items: center;
 }
 
-h3{ 
-    color: rgb(69, 7, 78);
-    font-size: 18px;
-    margin-top: 5px;
+.iconBtn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    padding: 0.4rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
 }
 
-h3::before{
-    content: '~';
+.iconBtn:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+    transform: scale(1.1);
 }
 
-.quote p{
-    font-size: 26px;
-    font-family: cursive;
-    font-weight: bold;
-    margin: 0;
+.favBtn {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    line-height: 1;
+    transition: var(--transition);
 }
 
-.quote button{
-    font-size: 16px;
-    background-color: rgb(69, 7, 78);
-    color: beige;
-    padding: 5px;
-    border-radius: 8%;
+.favBtn:hover {
+    transform: scale(1.2);
+}
+
+.favorited {
+    color: var(--accent);
+    filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.3));
+}
+
+.text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--text-main);
+    line-height: 1.4;
+    margin-bottom: 2rem;
+    z-index: 1;
+    font-style: italic;
+}
+
+.author {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    z-index: 1;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    z-index: 1;
+}
+
+.likeBtn {
+    background: var(--background);
+    border: 1px solid var(--border);
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.likeBtn:hover {
+    background: #fff1f2;
+    border-color: #fda4af;
+    color: #e11d48;
+    transform: scale(1.05);
+}
+
+.liked {
+    background: #fff1f2;
+    border-color: #fda4af;
+    color: #e11d48;
+    box-shadow: 0 4px 15px rgba(225, 29, 72, 0.2);
+}
+
+.liked svg {
+    filter: drop-shadow(0 0 5px rgba(225, 29, 72, 0.4));
+}
+
+.viewBtn {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.viewBtn:hover {
+    background: var(--primary-light);
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .quoteCard {
+        padding: 1.5rem;
+    }
+
+    .text {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .author {
+        margin-bottom: 1.5rem;
+    }
+
+    .likeBtn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .text {
+        font-size: 1.15rem;
+    }
+
+    .category {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.6rem;
+    }
 }
