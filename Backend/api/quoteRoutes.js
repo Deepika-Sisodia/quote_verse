@@ -17,4 +17,17 @@ router.post('/addquotes', async (req,res)=>{
     res.status(201).json({msg:"new quote create successfully"})
 })
 
+router.get('/quotes/:id', async (req,res)=>{
+    let {id} = req.params;
+        // return a single quote by id
+        try{
+            const quote = await Quotes.findById(id);
+            if(!quote) return res.status(404).json({msg: 'Quote not found'});
+            res.status(200).json(quote);
+        }
+        catch(e){
+            res.status(400).json({msg:'something went wrong'})
+        }
+})
+
 module.exports = router;
