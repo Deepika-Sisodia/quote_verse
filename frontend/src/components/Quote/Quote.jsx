@@ -2,20 +2,31 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
-import { Copy, Share2, Heart, Star, Link as LinkIcon } from 'lucide-react';
+import { Copy, Share2, Heart, Star, Link as LinkIcon, Trash2, Edit } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../store/AuthContext';
 import styles from './Quote.module.css';
 import API_BASE_URL from '../../config/apiConfig';
 
 const Quote = (props) => {
-  const { user, favorites, toggleFavorite } = useAuth();
+  const { user, token, favorites, toggleFavorite } = useAuth();
   const navigate = useNavigate();
+
+  // Ownership check - safely compare IDs
+  const ownerId = props.owner ? (typeof props.owner === 'object' ? props.owner._id : props.owner) : null;
+  const isOwner = user && ownerId && (String(user.id) === String(ownerId) || String(user._id) === String(ownerId));
 
   // Local state for optimistic updates
   const [likes, setLikes] = useState(props.likes.length);
-  const [isLiked, setIsLiked] = useState(user ? props.likes.includes(user.id) : false);
+  const [isLiked, setIsLiked] = useState(user ? props.likes.includes(user.id || user._id) : false);
   const [isFavorite, setIsFavorite] = useState(favorites.includes(props.id));
+
+  // Helper to create auth headers
+  const getAuthHeaders = () => ({
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
 
   // Keep favorite state in sync with context
   useEffect(() => {
@@ -58,7 +69,6 @@ const Quote = (props) => {
       return;
     }
 
-    // Optimistic Update
     const prevIsLiked = isLiked;
     const prevLikes = likes;
 
@@ -66,11 +76,9 @@ const Quote = (props) => {
     setLikes(prevIsLiked ? prevLikes - 1 : prevLikes + 1);
 
     try {
-      const res = await axios.post(`${API_BASE_URL}/quotes/${props.id}/like`);
-      // Sync with server just in case
+      const res = await axios.post(`${API_BASE_URL}/quotes/${props.id}/like`, {}, getAuthHeaders());
       setLikes(res.data.likesCount);
     } catch (err) {
-      // Revert on error
       setIsLiked(prevIsLiked);
       setLikes(prevLikes);
       toast.error("Error liking quote");
@@ -85,7 +93,6 @@ const Quote = (props) => {
       return;
     }
 
-    // Optimistic update
     const prevIsFav = isFavorite;
     setIsFavorite(!prevIsFav);
 
@@ -93,7 +100,6 @@ const Quote = (props) => {
     if (success) {
       toast.success(prevIsFav ? "Removed from favorites" : "Added to favorites");
     } else {
-      // Revert on error
       setIsFavorite(prevIsFav);
       toast.error("Error updating favorites");
     }
@@ -104,23 +110,31 @@ const Quote = (props) => {
       layout
       variants={props.variants}
       className={styles.quoteCard}
-      onClick={() => navigate(`/quotes/${props.id}`)}
     >
       <div className={styles.header}>
         <span className={styles.category}>{props.category}</span>
-        <div className={styles.badges}>
-          <button className={styles.iconBtn} onClick={copyToClipboard} title="Copy Text"><Copy size={16} /></button>
-          <button className={styles.iconBtn} onClick={copyLink} title="Copy Link"><LinkIcon size={16} /></button>
-          <button className={styles.iconBtn} onClick={shareQuote} title="Share on X"><Share2 size={16} /></button>
-          <button
-            className={`${styles.favBtn} ${isFavorite ? styles.favorited : ''}`}
-            onClick={favoriteHandler}
-          >
-            <Star size={20} fill={isFavorite ? "var(--accent)" : "none"} />
-          </button>
-        </div>
+        {isOwner && (
+          <div className={styles.ownerActions}>
+            <button
+              className={`${styles.iconBtn} ${styles.editBtn}`}
+              onClick={(e) => { e.stopPropagation(); props.onEdit && props.onEdit(props.id); }}
+              title="Edit Quote"
+            >
+              <Edit size={16} />
+            </button>
+            <button
+              className={`${styles.iconBtn} ${styles.deleteBtn}`}
+              onClick={(e) => { e.stopPropagation(); props.onDelete && props.onDelete(props.id); }}
+              title="Delete Quote"
+            >
+              <Trash2 size={16} />
+            </button>
+          </div>
+        )}
       </div>
+
       <p className={styles.text}>"{props.text}"</p>
+
       <h3 className={styles.author}>
         — <Link to={`/author/${props.author}`} onClick={(e) => e.stopPropagation()}>{formatAuthor(props.author)}</Link>
       </h3>
@@ -130,14 +144,49 @@ const Quote = (props) => {
           className={`${styles.likeBtn} ${isLiked ? styles.liked : ''}`}
           onClick={likeHandler}
         >
-          <Heart size={18} fill={isLiked ? "#e11d48" : "none"} /> {likes}
+          <Heart size={16} fill={isLiked ? "#e11d48" : "none"} /> {likes}
         </button>
-        <div className={styles.actions}>
-          <button className={styles.viewBtn}>View details</button>
+
+        <div className={styles.actionsBar}>
+          <button 
+            className={styles.actionBtn}
+            onClick={copyToClipboard} 
+            title="Copy Text"
+          >
+            <Copy size={16} />
+          </button>
+          <button 
+            className={styles.actionBtn}
+            onClick={copyLink} 
+            title="Copy Link"
+          >
+            <LinkIcon size={16} />
+          </button>
+          <button 
+            className={styles.actionBtn}
+            onClick={shareQuote} 
+            title="Share on X"
+          >
+            <Share2 size={16} />
+          </button>
+          <button
+            className={`${styles.actionBtn} ${styles.favBtn} ${isFavorite ? styles.favorited : ''}`}
+            onClick={favoriteHandler}
+            title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+          >
+            <Star size={16} fill={isFavorite ? "currentColor" : "none"} />
+          </button>
         </div>
+
+        <button
+          className={styles.readMoreBtn}
+          onClick={(e) => { e.stopPropagation(); navigate(`/quotes/${props.id}`); }}
+        >
+          Read More
+        </button>
       </div>
     </motion.li>
-  )
+  );
 }
 
 export default Quote;

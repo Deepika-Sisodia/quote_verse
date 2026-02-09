@@ -128,29 +128,96 @@ router.post('/quotes/:id/favorite', isLoggedIn, async (req, res) => {
     }
 });
 
-// Get User Profile & his quotes
+// Get User Profile Summary
 router.get('/profile', isLoggedIn, async (req, res) => {
     try {
         const Quotes = require('../models/Quote');
         const userQuotes = await Quotes.find({ owner: req.user._id });
-        const user = await User.findById(req.user._id).populate('favorites');
+        const user = await User.findById(req.user._id);
 
         // Calculate total likes received
         const totalLikes = userQuotes.reduce((acc, q) => acc + (q.likes ? q.likes.length : 0), 0);
 
         res.status(200).json({
             user: {
+                id: user._id,
                 username: user.username,
                 name: user.name,
                 email: user.email,
-                favorites: user.favorites,
+                createdAt: user.createdAt,
                 totalQuotes: userQuotes.length,
-                totalLikes
-            },
-            quotes: userQuotes
+                totalLikes,
+                totalFavorites: user.favorites.length
+            }
         });
     } catch (err) {
-        res.status(400).json({ msg: "Error fetching profile" });
+        console.error("GET /profile Error:", err);
+        res.status(500).json({ msg: "Error fetching profile" });
+    }
+});
+
+// Get User Favorites (Protected)
+router.get('/users/favorites', isLoggedIn, async (req, res) => {
+    try {
+        const Quotes = require('../models/Quote');
+        const { page = 1, limit = 10 } = req.query;
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+        const limitNum = parseInt(limit);
+
+        const user = await User.findById(req.user._id).select('favorites');
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+        const total = user.favorites.length;
+
+        const favorites = await Quotes.find({ _id: { $in: user.favorites } })
+            .populate('owner', 'username name')
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limitNum);
+
+        res.status(200).json({
+            quotes: favorites,
+            pagination: {
+                total,
+                page: parseInt(page),
+                limit: limitNum,
+                pages: Math.ceil(total / limitNum)
+            }
+        });
+    } catch (err) {
+        console.error("GET /users/favorites Error:", err);
+        res.status(500).json({ msg: 'Error fetching favorite quotes' });
+    }
+});
+
+// Get User Liked Quotes (Protected)
+router.get('/users/liked', isLoggedIn, async (req, res) => {
+    try {
+        const Quotes = require('../models/Quote');
+        const { page = 1, limit = 10 } = req.query;
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+        const limitNum = parseInt(limit);
+
+        const total = await Quotes.countDocuments({ likes: req.user._id });
+        const likedQuotes = await Quotes.find({ likes: req.user._id })
+            .populate('owner', 'username name')
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limitNum);
+
+        res.status(200).json({
+            quotes: likedQuotes,
+            pagination: {
+                total,
+                page: parseInt(page),
+                limit: limitNum,
+                pages: Math.ceil(total / limitNum)
+            }
+        });
+    } catch (err) {
+        console.error("GET /users/liked Error:", err);
+        res.status(500).json({ msg: 'Error fetching liked quotes' });
     }
 });
 

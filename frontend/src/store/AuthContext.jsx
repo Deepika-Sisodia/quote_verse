@@ -16,8 +16,10 @@ export const AuthProvider = ({ children }) => {
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             const storedUser = localStorage.getItem('user');
-            if (storedUser) setUser(JSON.parse(storedUser));
-            fetchFavorites();
+            if (storedUser) {
+                setUser(JSON.parse(storedUser));
+                fetchFavorites(); // Only fetch when we have a valid user
+            }
         } else {
             delete axios.defaults.headers.common['Authorization'];
             setUser(null);
@@ -28,10 +30,21 @@ export const AuthProvider = ({ children }) => {
 
     const fetchFavorites = async () => {
         try {
-            const res = await axios.get(`${API_BASE_URL}/profile`);
-            setFavorites(res.data.user.favorites.map(f => f._id));
+            const res = await axios.get(`${API_BASE_URL}/users/favorites?limit=100`);
+            const favoriteIds = res.data.quotes.map(q => q._id);
+            setFavorites(favoriteIds);
         } catch (err) {
             console.error("Error fetching favorites", err);
+            // If we get a 401, the token is invalid - clear it
+            if (err.response?.status === 401) {
+                console.log("Token invalid, clearing auth data");
+                setToken(null);
+                setUser(null);
+                setFavorites([]);
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                delete axios.defaults.headers.common['Authorization'];
+            }
         }
     }
 

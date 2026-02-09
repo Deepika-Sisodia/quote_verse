@@ -1,0 +1,182 @@
+[
+  {
+    "category": "Other",
+    "tags": [],
+    "likes": [],
+    "_id": "698857071146687a952f5b6c",
+    "author": "Samarth Vohra",
+    "text": "Syntax Over Semantics",
+    "__v": 0
+  },
+  {
+    "category": "Other",
+    "tags": [],
+    "likes": [],
+    "_id": "698857071146687a952f5b6d",
+    "author": "Sir Francis Bacon",
+    "text": "Knowledge is power.",
+    "__v": 0
+  },
+  {
+    "category": "Other",
+    "tags": [],
+    "likes": [],
+    "_id": "698857071146687a952f5b6e",
+    "author": "Forrest Gump",
+    "text": "Life is like a box of chocolates. You never know what you're gonna get.",
+    "__v": 0
+  },
+  {
+    "category": "Other",
+    "tags": [],
+    "likes": [],
+    "_id": "698857071146687a952f5b6f",
+    "author": "Albert Einstein",
+    "text": "Life is like riding a bicycle. To keep your balance, you must keep moving.",
+    "__v": 0
+  },
+  {
+    "category": "Other",
+    "tags": [],
+    "likes": [],
+    "_id": "698857071146687a952f5b70",
+    "author": "Star Wars",
+    "text": "May the Force be with you.",
+    "__v": 0
+  },
+  {
+    "category": "Other",
+    "tags": [],
+    "likes": [],
+    "_id": "69885c5a02d44174203ad52b",
+    "author": "Deepika",
+    "text": "HIii",
+    "__v": 0
+  },
+  {
+    "_id": "698987c1b5c92270b3473d8c",
+    "author": "Deepika Sisodia",
+    "text": "Enjoy it, till it lasts...",
+    "owner": "698984e9efd3fde6505ff303",
+    "category": "Life",
+    "tags": [],
+    "likes": [
+      "698984e9efd3fde6505ff303"
+    ],
+    "createdAt": "2026-02-09T07:07:45.679Z",
+    "updatedAt": "2026-02-09T07:08:10.243Z",
+    "__v": 1
+  },
+  {
+    "_id": "69898ca2509f2523f0f6eec7",
+    "author": "Steve Jobs",
+    "text": "The only way to do great work is to love what you do.",
+    "owner": "698984e9efd3fde6505ff303",
+    "category": "Inspirational",
+    "tags": [
+      "inspirational"
+    ],
+    "likes": [],
+    "__v": 0,
+    "createdAt": "2026-02-09T07:28:34.231Z",
+    "updatedAt": "2026-02-09T07:28:34.231Z"
+  },
+  {
+    "_id": "69898ca2509f2523f0f6eec8",
+    "author": "John Lennon",
+    "text": "Life is what happens when you're busy making other plans.",
+    "owner": "698984e9efd3fde6505ff303",
+    "category": "Life",
+    "tags": [
+      "life"
+    ],
+    "likes": [],
+    "__v": 0,
+    "createdAt": "2026-02-09T07:28:34.233Z",
+    "updatedAt": "2026-02-09T07:28:34.233Z"
+  },
+  {
+    "_id": "69898ca2509f2523f0f6eec9",
+    "author": "Theodore Roosevelt",
+    "text": "Believe you can and you're halfway there.",
+    "owner": "698984e9efd3fde6505ff303",
+    "category": "Inspirational",
+    "tags": [
+      "inspirational"
+    ],
+    "likes": [],
+    "__v": 0,
+    "createdAt": "2026-02-09T07:28:34.234Z",
+    "updatedAt": "2026-02-09T07:28:34.234Z"
+  },
+  {
+    "_id": "69898ca2509f2523f0f6eeca",
+    "author": "Eleanor Roosevelt",
+    "text": "The future belongs to those who believe in the beauty of their dreams.",
+    "owner": "698984e9efd3fde6505ff303",
+    "category": "Inspirational",
+    "tags": [
+      "inspirational"
+    ],
+    "likes": [],
+    "__v": 0,
+    "createdAt": "2026-02-09T07:28:34.234Z",
+    "updatedAt": "2026-02-09T07:28:34.234Z"
+  },
+  {
+    "_id": "69898ca2509f2523f0f6eecb",
+    "author": "Confucius",
+    "text": "It does not matter how slowly you go as long as you do not stop.",
+    "owner": "698984e9efd3fde6505ff303",
+    "category": "Wisdom",
+    "tags": [
+      "wisdom"
+    ],
+    "likes": [],
+    "__v": 0,
+    "createdAt": "2026-02-09T07:28:34.234Z",
+    "updatedAt": "2026-02-09T07:28:34.234Z"
+  },
+  {
+    "_id": "69898ca2509f2523f0f6eecc",
+    "author": "Winston Churchill",
+    "text": "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+    "owner": "698984e9efd3fde6505ff303",
+    "category": "Success",
+    "tags": [
+      "success"
+    ],
+    "likes": [],
+    "__v": 0,
+    "createdAt": "2026-02-09T07:28:34.234Z",
+    "updatedAt": "2026-02-09T07:28:34.234Z"
+  },
+  {
+    "_id": "69898ca2509f2523f0f6eecd",
+    "author": "C.S. Lewis",
+    "text": "Hardships often prepare ordinary people for an extraordinary destiny.",
+    "owner": "698984e9efd3fde6505ff303",
+    "category": "Inspirational",
+    "tags": [
+      "inspirational"
+    ],
+    "likes": [],
+    "__v": 0,
+    "createdAt": "2026-02-09T07:28:34.234Z",
+    "updatedAt": "2026-02-09T07:28:34.234Z"
+  },
+  {
+    "_id": "69898ca2509f2523f0f6eece",
+    "author": "Albert Einstein",
+    "text": "If you want to live a happy life, tie it to a goal, not to people or things.",
+    "owner": "698984e9efd3fde6505ff303",
+    "category": "Life",
+    "tags": [
+      "life"
+    ],
+    "likes": [],
+    "__v": 0,
+    "createdAt": "2026-02-09T07:28:34.234Z",
+    "updatedAt": "2026-02-09T07:28:34.234Z"
+  }
+]

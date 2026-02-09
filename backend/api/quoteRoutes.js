@@ -86,6 +86,35 @@ router.post('/addquotes', isLoggedIn, async (req, res) => {
     }
 });
 
+// Get My Quotes (Protected) - MUST be before /quotes/:id to match specific route first
+router.get('/quotes/my', isLoggedIn, async (req, res) => {
+    try {
+        const { page = 1, limit = 10 } = req.query;
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+        const limitNum = parseInt(limit);
+
+        const total = await Quotes.countDocuments({ owner: req.user._id });
+        const quotes = await Quotes.find({ owner: req.user._id })
+            .populate('owner', 'username name')
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limitNum);
+
+        res.status(200).json({
+            quotes,
+            pagination: {
+                total,
+                page: parseInt(page),
+                limit: limitNum,
+                pages: Math.ceil(total / limitNum)
+            }
+        });
+    } catch (err) {
+        console.error("GET /quotes/my Error:", err);
+        res.status(500).json({ msg: 'Error fetching your quotes' });
+    }
+});
+
 // Get single quote
 router.get('/quotes/:id', async (req, res) => {
     let { id } = req.params;
