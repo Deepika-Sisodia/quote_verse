@@ -24,19 +24,13 @@ mongoose.connect(MONGO_URL)
 
 const allowedOrigins = [
     'http://localhost:5173',
-    process.env.FRONTEND_URL
-].filter(Boolean); // removes undefined values
+    'https://quote-verse-nine.vercel.app'
+];
 
 app.use(cors({
-    origin: function (origin, callback) {
-        // allow server-to-server & health checks
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(null, false);
-        }
-    },
-    credentials: true
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 
 /* =========================
@@ -46,7 +40,7 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Log requests only in development
+// Log requests in development only
 if (process.env.NODE_ENV !== 'production') {
     app.use((req, res, next) => {
         console.log(`${req.method} ${req.url}`);
