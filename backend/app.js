@@ -9,6 +9,11 @@ const quoteRoutes = require('./api/quoteRoutes');
 const userRoutes = require('./api/userRoutes');
 
 /* =========================
+   TRUST PROXY (RENDER FIX)
+========================= */
+app.set('trust proxy', 1);
+
+/* =========================
    DATABASE CONNECTION
 ========================= */
 
@@ -40,7 +45,6 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Log requests in development only
 if (process.env.NODE_ENV !== 'production') {
     app.use((req, res, next) => {
         console.log(`${req.method} ${req.url}`);
